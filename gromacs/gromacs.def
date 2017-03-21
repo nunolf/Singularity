@@ -1,0 +1,28 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%setup
+    # commands to be executed on host outside container during bootstrap
+
+%post
+    # commands to be executed inside container during bootstrap Pre-requisites installs
+    apt-get -y update
+    apt-get -y install build-essential wget cmake
+
+    # Download and uncompress gmx
+    wget ftp://ftp.gromacs.org/pub/gromacs/gromacs-2016.3.tar.gz
+    tar xfz gromacs-2016.3.tar.gz
+    cd gromacs-2016.3
+    mkdir build
+    cd build
+    cmake .. -DGMX_MPI=on -DGMX_BUILD_MDRUN_ONLY=on -DGMX_BUILD_OWN_FFTW=ON -DREGRESSIONTEST_DOWNLOAD=ON
+#    make
+#    make check
+#    sudo make install source /usr/local/gromacs/bin/GMXRC
+
+%runscript
+    # commands to be executed when the container runs
+
+%test
+    # commands to be executed within container at close of bootstrap process
+
